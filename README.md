@@ -1,70 +1,19 @@
-**[View document in Syncfusion .NET MAUI Knowledge Base](https://www.syncfusion.com/kb/13181/how-to-maintain-only-one-group-in-the-expanded-state-in-net-maui-listview-sflistview)**
+# How to maintain only one group in the expanded state in .NET MAUI ListView (SfListView)?
 
-## Sample
+In [.NET MAUI ListView (SfListView)](https://www.syncfusion.com/maui-controls/maui-listview) you can ensure only one group remains in an expanded state by handling the [GroupExpanding](https://help.syncfusion.com/cr/maui/Syncfusion.Maui.ListView.SfListView.html#Syncfusion_Maui_ListView_SfListView_GroupExpanding) event. This approach involves collapsing all other groups when a new group is expanded, maintaining a cleaner and more organized view.
 
-```xaml
-<ListView:SfListView x:Name="listView"
-                        ItemSize="70" 
-                        GroupHeaderSize="50"
-                        SelectionMode="Single"
-                        IsStickyGroupHeader="True"
-                        ItemsSource="{Binding ContactsInfo}"
-                        AllowGroupExpandCollapse="True">
+Manually expand the first group in the [Loaded](https://help.syncfusion.com/cr/maui/Syncfusion.Maui.ListView.SfListView.html#Syncfusion_Maui_ListView_SfListView_Loaded) event. In the GroupExpanding event, compare the current expanded group with the previous one and collapse the previous expanded group.
 
-    <ListView:SfListView.GroupHeaderTemplate>
-        <DataTemplate>
-            <StackLayout BackgroundColor="#E4E4E4">
-                <Label Text="{Binding Key}" FontSize="20" FontAttributes="Bold" TextColor="#4d4d4d" Padding="10,0,0,0" VerticalOptions="Center" HorizontalOptions="Start"/>
-            </StackLayout>
-        </DataTemplate>
-    </ListView:SfListView.GroupHeaderTemplate>
-    
-    <ListView:SfListView.ItemTemplate>
-        <DataTemplate>
-            <code>
-            . . .
-            . . .
-            <code>
-        </DataTemplate>
-    </ListView:SfListView.ItemTemplate>
-</ListView:SfListView>
+![Maintain only one group in expanded state in .NET MAUI ListView (SfListView)](https://www.syncfusion.com/uploads/user/kb/maui/maui-2096/maui-2096_img1.gif)
 
-C#:
+Download the complete sample on [GitHub](https://github.com/SyncfusionExamples/maintain-only-one-group-in-expanded-state-.net-maui-listview).
 
-ListView.DataSource.GroupDescriptors.Add(new GroupDescriptor()
-{
-    PropertyName = "ContactName",
-    KeySelector = (object obj1) =>
-    {
-        var item = (obj1 as ListViewContactInfo);
-        return item.ContactName[0].ToString();
-    },
-});
+**Conclusion**
 
-ListView.Loaded += ListView_Loaded;
-ListView.GroupExpanding += ListView_GroupExpanding;
+I hope you enjoyed learning how to maintain only one group in the expanded state in .NET MAUI ListView.
 
-private void ListView_Loaded(object sender, EventArgs e)
-{
-    this.Dispatcher.Dispatch(() =>
-    {
-        ListView.CollapseAll();
-        var group = ListView.DataSource.Groups[0];
-        ListView.ExpandGroup(group);
-    });
-}
+You can refer to our [.NET MAUI ListView feature tour](https://www.syncfusion.com/maui-controls/maui-listview) page to learn about its other groundbreaking feature representations and [documentation](https://help.syncfusion.com/maui/listview/getting-started), and how to quickly get started with configuration specifications. Explore our [.NET MAUI ListView example](https://github.com/syncfusion/maui-demos/tree/master/MAUI/ListView) to understand how to create and manipulate data.
 
-private void ListView_GroupExpanding(object sender, GroupExpandCollapseChangingEventArgs e)
-{
-    if (e.Groups.Count > 0)
-    {
-        var currentGroup = e.Groups[0];
+For current customers, check out our components from the [License and Downloads](https://www.syncfusion.com/sales/teamlicense) page. If you are new to Syncfusion®, try our 30-day [free trial](https://www.syncfusion.com/downloads/maui) to check out our other controls.
 
-        if (expandedGroup != null && expandedGroup.Key != currentGroup.Key)
-        {
-            ListView.CollapseGroup(expandedGroup);
-        }
-        expandedGroup = currentGroup;
-    }
-}
-```
+Please let us know in the comments section if you have any queries or require clarification. Contact us through our [support forums](https://www.syncfusion.com/forums), [Direct-Trac](https://support.syncfusion.com/create), or [feedback portal](https://www.syncfusion.com/feedback/maui?control=sflistview). We are always happy to assist you!
